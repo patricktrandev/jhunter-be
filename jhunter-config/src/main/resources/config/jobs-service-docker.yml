@@ -1,0 +1,87 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://postgres:5432/jobjhunter
+    username: jhunter
+    password: patrick
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+  cloud:
+    config:
+      server:
+        bus:
+          enabled: true
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+#  profiles:
+#    active: dev
+#actuator
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+info:
+  app:
+    name: JOB SERVICE- JHUNTER application
+    description: a spring boot MICROSERVICE application
+    version: 1.0.0
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: localhost
+    client:
+      serviceUrl:
+        defaultZone: http://servicereg:8761/
+server:
+  port: 8082
+# Resilience4J - companyBreaker is instance created by us
+resilience4j:
+  circuitbreaker:
+    instances:
+      companyBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        register-health-indicator: true
+        automatic-transition-from-open-to-half-open-enabled: true
+        sliding-window-type: count_based
+
+logging:
+  level:
+    root: INFO
+  file:
+    name: logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 5MB
+      max-history: 7

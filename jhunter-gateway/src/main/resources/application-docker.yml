@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: JHUNTER-GATEWAY
+  cloud:
+    gateway:
+      routes[0]:
+        id: COMPANY-SERVICE
+        uri: http://company:8081
+        predicates[0]: Path=/api/v1/companies/**
+      routes[1]:
+        id: JOB-SERVICE
+        uri: http://jobs:8082
+        predicates[0]: Path=/api/v1/jobs/**
+      routes[2]:
+        id: REVIEW-SERVICE
+        uri: http://review:8083
+        predicates[0]: Path=/api/v1/reviews/**
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
+
+#      routes[3]:
+#        id: eureka-server
+#        uri: http://localhost:8761
+#        predicates[0]: Path=/eureka/main
+#        filters[0]: SetPath=
+#      routes[4]:
+#        id: eureka-server-static
+#        uri: http://localhost:8761
+#        predicates[0]: Path=/eureka/**
+
+
+#actuator
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: localhost
+    client:
+      serviceUrl:
+        defaultZone: http://servicereg:8761/
+server:
+  port: 8085
+
+#logging level
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
+#            route:
+#              RouteDefinitionLocator: INFO

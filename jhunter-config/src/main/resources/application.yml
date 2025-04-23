@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: git
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/patricktrandev/jhunter-configserver
+          default-label: main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+#  cloud:
+#    config:
+#      server:
+#        native:
+#          search-locations: file:///D:\2024_MICROSERVICE_LEARNING\EMBARKX\jhunter_sec36\jhunter-config\src\main\resources\config
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+eureka:
+  instance:
+    client:
+      serviceUrl:
+        defaultZone: http://localhost:8761/
+server:
+  port: 8888

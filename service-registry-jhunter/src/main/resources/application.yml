@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: SERVICE-REGISTRY-JHUNTER
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  renewalPercentThreshold: 0.85
+server:
+  port: 8761
